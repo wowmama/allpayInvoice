@@ -1,5 +1,7 @@
 package com.fruitpay.allpayInvoice;
 
+import java.util.Date;
+
 import com.fruitpay.allpayInvoice.model.Carruer;
 import com.fruitpay.allpayInvoice.model.Customer;
 import com.fruitpay.allpayInvoice.model.Invoice;
@@ -35,6 +37,11 @@ public class InvoiceMachine {
 		
 	}
 	
+	
+	public InvoiceMachine setTimeStamp(Date timeStamp){
+		invoice.setTimeStamp(timeStamp);
+		return this;
+	}
 	public InvoiceMachine setCustomer(Customer customer){
 		this.invoice.setCustomer(customer);
 		return this;

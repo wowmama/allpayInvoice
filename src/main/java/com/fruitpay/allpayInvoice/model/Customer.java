@@ -8,10 +8,10 @@ import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 public class Customer extends PostParameterMap{
 	@PostParameterName(name="CustomerID") private String customerId;
 	@PostParameterName(name="CustomerIdentifier") private String customerIdentifier;
-	@PostParameterName(name="CustomerName") private String customerName;
-	@PostParameterName(name="CustomerAddr") private String customerAddr;
+	@PostParameterName(name="CustomerName", urlEncode=true) private String customerName;
+	@PostParameterName(name="CustomerAddr", urlEncode=true) private String customerAddr;
 	@PostParameterName(name="CustomerPhone") private String customerPhone;
-	@PostParameterName(name="CustomerEmail") private String customerEmail;
+	@PostParameterName(name="CustomerEmail", urlEncode=true) private String customerEmail;
 	
 	public String getCustomerId() {
 		return customerId;

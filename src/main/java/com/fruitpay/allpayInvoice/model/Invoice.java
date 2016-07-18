@@ -16,7 +16,7 @@ public class Invoice extends PostParameterMap{
 	private Carruer carruer;
 	@PostParameterName(name="TaxType") private TaxTypeEnum taxType;
 	@PostParameterName(name="SalesAmount") private Integer salesAmount;
-	@PostParameterName(name="InvoiceRemark") private String invoiceRemark;
+	@PostParameterName(name="InvoiceRemark", urlEncode=true) private String invoiceRemark;
 	private Items itemList;
 	@PostParameterName(name="InvType") private InvTypeEnum invType;
 	@PostParameterName(name="vat") private VatEnum vat;

@@ -2,13 +2,13 @@ package com.fruitpay.allpayInvoice.model;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
+import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 
 public class Items extends PostParameterMap{
 	private List<Item> items;
@@ -47,13 +47,13 @@ public class Items extends PostParameterMap{
 			NoSuchMethodException, SecurityException,
 			InvocationTargetException, UnsupportedEncodingException {
 		Map<String, String> parameterMap = new TreeMap<String, String>();
-		parameterMap.put("ItemName", URLEncoder.encode(getItemName(),"UTF-8"));
+		parameterMap.put("ItemName", AllpayURLEncoder.encode(getItemName(),"UTF-8"));
 		parameterMap.put("ItemCount", getItemCount());
-		parameterMap.put("ItemWord", URLEncoder.encode(getItemWord(),"UTF-8"));
+		parameterMap.put("ItemWord", AllpayURLEncoder.encode(getItemWord(),"UTF-8"));
 		parameterMap.put("ItemPrice", getItemPrice());
 		parameterMap.put("ItemTaxType", getItemTaxType());
 		parameterMap.put("ItemAmount", getItemAmount());
-		parameterMap.put("ItemRemark", URLEncoder.encode(getItemRemark(),"UTF-8"));
+		parameterMap.put("ItemRemark", AllpayURLEncoder.encode(getItemRemark(),"UTF-8"));
 		return parameterMap;
 	}
 

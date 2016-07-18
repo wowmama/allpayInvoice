@@ -4,14 +4,15 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
+import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 
 public abstract class PostParameterMap {
+	
 	public Map<String, String> getParameterMap() throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException {
 		Map<String, String> parameterMap = new TreeMap<String, String>();
 		Field[] fields = this.getClass().getDeclaredFields();
@@ -56,13 +57,13 @@ public abstract class PostParameterMap {
 				PostParameterName annotation = field.getDeclaredAnnotation(PostParameterName.class);
 				
 				String value = method.invoke(obj).toString();
-				parameterMap.put(annotation.name(), annotation.urlEncode() ? URLEncoder.encode(value, "UTF-8") : value);
+				parameterMap.put(annotation.name(), annotation.urlEncode() ? AllpayURLEncoder.encode(value,"UTF-8") : value);
 				
 			}else if(field.isAnnotationPresent(PostParameterName.class)){
 				PostParameterName annotation = field.getDeclaredAnnotation(PostParameterName.class);
 				String value = 
 						obj instanceof Date ? String.valueOf(((Date)obj).getTime()) : obj.toString() ;
-				parameterMap.put(annotation.name(), annotation.urlEncode() ? URLEncoder.encode(value, "UTF-8") : value);
+				parameterMap.put(annotation.name(), annotation.urlEncode() ? AllpayURLEncoder.encode(value,"UTF-8") : value);
 			
 			}else if(obj instanceof PostParameterMap){
 				parameterMap.putAll(((PostParameterMap)obj).getUrlEncodeParameterMap());
