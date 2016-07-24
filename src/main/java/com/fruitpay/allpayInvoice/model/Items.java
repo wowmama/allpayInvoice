@@ -36,7 +36,7 @@ public class Items extends PostParameterMap{
 		parameterMap.put("ItemCount", getItemCount());
 		parameterMap.put("ItemWord", getItemWord());
 		parameterMap.put("ItemPrice", getItemPrice());
-		parameterMap.put("ItemTaxType", getItemTaxType());
+//		parameterMap.put("ItemTaxType", getItemTaxType());
 		parameterMap.put("ItemAmount", getItemAmount());
 		parameterMap.put("ItemRemark", getItemRemark());
 		return parameterMap;

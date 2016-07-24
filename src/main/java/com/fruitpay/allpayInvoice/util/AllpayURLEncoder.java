@@ -68,6 +68,8 @@ public class AllpayURLEncoder{
         }
         dontNeedEncoding.set(' '); /* encoding a space to a + is done
                                     * in the encode() method */
+        
+        //allpay urlencode
         dontNeedEncoding.set('-');
         dontNeedEncoding.set('_');
         dontNeedEncoding.set('.');

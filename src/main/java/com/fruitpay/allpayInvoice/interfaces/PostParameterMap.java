@@ -32,7 +32,7 @@ public abstract class PostParameterMap {
 			}else if(field.isAnnotationPresent(PostParameterName.class)){
 				PostParameterName annotation = field.getDeclaredAnnotation(PostParameterName.class);
 				String value = 
-						obj instanceof Date ? String.valueOf(((Date)obj).getTime()) : obj.toString() ;
+						obj instanceof Date ? String.valueOf(((Date)obj).getTime()/1000) : obj.toString() ;
 				parameterMap.put(annotation.name(), value);
 			}else if(obj instanceof PostParameterMap){
 				parameterMap.putAll(((PostParameterMap)obj).getParameterMap());
@@ -62,7 +62,7 @@ public abstract class PostParameterMap {
 			}else if(field.isAnnotationPresent(PostParameterName.class)){
 				PostParameterName annotation = field.getDeclaredAnnotation(PostParameterName.class);
 				String value = 
-						obj instanceof Date ? String.valueOf(((Date)obj).getTime()) : obj.toString() ;
+						obj instanceof Date ? String.valueOf(((Date)obj).getTime()/1000) : obj.toString() ;
 				parameterMap.put(annotation.name(), annotation.urlEncode() ? AllpayURLEncoder.encode(value,"UTF-8") : value);
 			
 			}else if(obj instanceof PostParameterMap){
