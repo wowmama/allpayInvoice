@@ -28,7 +28,7 @@ public class CheckValueBuilder {
 		
 		sb.append("HashKey=" + hashKey + "&");
 		for(Object key : keys){
-			sb.append(key + "=" + parameterMap.get(key) + "&");
+			sb.append(key + "=" + AllpayURLEncoder.encode(parameterMap.get(key), "UTF-8") + "&");
 		}
 		sb.append("HashIV=" + hashIV);
 		String str = AllpayURLEncoder.encode(sb.toString(), "UTF-8").toLowerCase();

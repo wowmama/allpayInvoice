@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 
-public class Items extends PostParameterMap{
+public class Items implements PostParameterMap{
 	private List<Item> items;
 	
 	public Items(){
@@ -29,33 +29,7 @@ public class Items extends PostParameterMap{
 		this.items = items;
 	}
 	
-	@Override
-	public Map<String, String> getParameterMap() {
-		Map<String, String> parameterMap = new TreeMap<String, String>();
-		parameterMap.put("ItemName", getItemName());
-		parameterMap.put("ItemCount", getItemCount());
-		parameterMap.put("ItemWord", getItemWord());
-		parameterMap.put("ItemPrice", getItemPrice());
-//		parameterMap.put("ItemTaxType", getItemTaxType());
-		parameterMap.put("ItemAmount", getItemAmount());
-		parameterMap.put("ItemRemark", getItemRemark());
-		return parameterMap;
-	}
-	@Override
-	public Map<String, String> getUrlEncodeParameterMap()
-			throws IllegalArgumentException, IllegalAccessException,
-			NoSuchMethodException, SecurityException,
-			InvocationTargetException, UnsupportedEncodingException {
-		Map<String, String> parameterMap = new TreeMap<String, String>();
-		parameterMap.put("ItemName", AllpayURLEncoder.encode(getItemName(),"UTF-8"));
-		parameterMap.put("ItemCount", getItemCount());
-		parameterMap.put("ItemWord", AllpayURLEncoder.encode(getItemWord(),"UTF-8"));
-		parameterMap.put("ItemPrice", getItemPrice());
-		parameterMap.put("ItemTaxType", getItemTaxType());
-		parameterMap.put("ItemAmount", getItemAmount());
-		parameterMap.put("ItemRemark", AllpayURLEncoder.encode(getItemRemark(),"UTF-8"));
-		return parameterMap;
-	}
+
 
 	public String getItemRemark() {
 		StringBuilder sb = new StringBuilder();
@@ -139,5 +113,22 @@ public class Items extends PostParameterMap{
 		}else{
 			return "";
 		}
+	}
+	
+	@Override
+	public Map<String, String> getParameterMap()
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchMethodException, SecurityException, InvocationTargetException {
+		Map<String, String> parameterMap = new TreeMap<String, String>();
+		if(items.size() > 0){
+			parameterMap.put("ItemName", getItemName());
+			parameterMap.put("ItemCount", getItemCount());
+			parameterMap.put("ItemWord", getItemWord());
+			parameterMap.put("ItemPrice", getItemPrice());
+			parameterMap.put("ItemTaxType", getItemTaxType());
+			parameterMap.put("ItemAmount", getItemAmount());
+			parameterMap.put("ItemRemark", getItemRemark());
+		}
+		return parameterMap;
 	}
 }

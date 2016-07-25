@@ -1,11 +1,13 @@
 package com.fruitpay.allpayInvoice.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 
-public class Carruer extends PostParameterMap{
+public class Carruer implements PostParameterMap{
 	
 	@PostParameterName(name="CarruerNum") private String carruerNum;
 	@PostParameterName(name="CarruerType") private CarruerTypeEnum carruerType;
@@ -48,5 +50,9 @@ public class Carruer extends PostParameterMap{
 		public String value(){
 			return carruerType.toString();
 		}
+	}
+
+	public Map<String, String> getParameterMap() throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException {
+		return new ParameterMapBuilder().build(this);
 	}
 }

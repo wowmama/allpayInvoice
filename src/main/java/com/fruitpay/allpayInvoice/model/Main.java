@@ -37,7 +37,7 @@ public class Main {
 			.setPostUrl(postUrl);
 		
 		Invoice invoice = invoiceMachine.createInvoice()
-				.setRelateNumber("MYINVOICE123457")
+				.setRelateNumber("MYINVOICE123460")
 				.setInvType(Invoice.InvTypeEnum.NORMAL)
 				.setSalesAmount(100)
 				.setTimeStamp(new Date());
@@ -61,7 +61,6 @@ public class Main {
 				.setItemRemark("test_ktv");
 		
 		invoiceMachine.postInvoice();
-
     }
 	
 }

@@ -9,5 +9,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface PostParameterName {
 	public String name();
-	public boolean urlEncode() default false;
 }

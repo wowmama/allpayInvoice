@@ -1,11 +1,14 @@
 package com.fruitpay.allpayInvoice.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.Map;
 
+import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 
-public class Invoice extends PostParameterMap{
+public class Invoice implements PostParameterMap{
 	@PostParameterName(name="TimeStamp") private Date timeStamp;
 	@PostParameterName(name="RelateNumber") private String relateNumber;
 	private Customer customer;
@@ -16,7 +19,7 @@ public class Invoice extends PostParameterMap{
 	private Carruer carruer;
 	@PostParameterName(name="TaxType") private TaxTypeEnum taxType;
 	@PostParameterName(name="SalesAmount") private Integer salesAmount;
-	@PostParameterName(name="InvoiceRemark", urlEncode=true) private String invoiceRemark;
+	@PostParameterName(name="InvoiceRemark") private String invoiceRemark;
 	private Items itemList;
 	@PostParameterName(name="InvType") private InvTypeEnum invType;
 	@PostParameterName(name="vat") private VatEnum vat;
@@ -24,11 +27,11 @@ public class Invoice extends PostParameterMap{
 	
 	public Invoice(){
 		//預設為不列印、不捐贈、應稅、一般稅額
-		print = PrintEnum.NO;
-		donation = DonationEnum.NO;
-		taxType = TaxTypeEnum.TAXABLE;
-		invType = InvTypeEnum.NORMAL;
-		itemList = new Items();
+//		print = PrintEnum.NO;
+//		donation = DonationEnum.NO;
+//		taxType = TaxTypeEnum.TAXABLE;
+//		invType = InvTypeEnum.NORMAL;
+//		itemList = new Items();
 	}
 	
 	public Date getTimeStamp() {
@@ -260,5 +263,10 @@ public class Invoice extends PostParameterMap{
 		public String value(){
 			return clearanceMark.toString();
 		}
+	}
+	public Map<String, String> getParameterMap()
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchMethodException, SecurityException, InvocationTargetException {
+		return new ParameterMapBuilder().build(this);
 	}
 }

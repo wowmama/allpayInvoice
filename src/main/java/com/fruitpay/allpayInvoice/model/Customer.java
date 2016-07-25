@@ -1,17 +1,19 @@
 package com.fruitpay.allpayInvoice.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 
-public class Customer extends PostParameterMap{
+public class Customer implements PostParameterMap{
 	@PostParameterName(name="CustomerID") private String customerId;
 	@PostParameterName(name="CustomerIdentifier") private String customerIdentifier;
-	@PostParameterName(name="CustomerName", urlEncode=true) private String customerName;
-	@PostParameterName(name="CustomerAddr", urlEncode=true) private String customerAddr;
+	@PostParameterName(name="CustomerName") private String customerName;
+	@PostParameterName(name="CustomerAddr") private String customerAddr;
 	@PostParameterName(name="CustomerPhone") private String customerPhone;
-	@PostParameterName(name="CustomerEmail", urlEncode=true) private String customerEmail;
+	@PostParameterName(name="CustomerEmail") private String customerEmail;
 	
 	public String getCustomerId() {
 		return customerId;
@@ -54,5 +56,10 @@ public class Customer extends PostParameterMap{
 	public Customer setCustomerEmail(String customerEmail) {
 		this.customerEmail = customerEmail;
 		return this;
+	}
+	public Map<String, String> getParameterMap()
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchMethodException, SecurityException, InvocationTargetException {
+		return new ParameterMapBuilder().build(this);
 	}
 }

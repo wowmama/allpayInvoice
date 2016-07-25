@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,7 +24,7 @@ public class ItemsTest {
 			"   ItemName|  ItemCount|  ItemWord|  ItemPrice|  ItemTaxType|  ItemAmount|  ItemRemark"
 		}
 	)
-	public void testGetParameterMap(String ItemName, String ItemCount, String ItemWord, String ItemPrice,String ItemTaxType, String ItemAmount, String ItemRemark) {
+	public void testGetParameterMap(String ItemName, String ItemCount, String ItemWord, String ItemPrice,String ItemTaxType, String ItemAmount, String ItemRemark) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException {
 		Items items = spy(new Items());
 		doReturn(ItemName).when(items).getItemName();
 		doReturn(ItemCount).when(items).getItemCount();

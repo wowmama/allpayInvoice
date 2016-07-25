@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import org.junit.runner.RunWith;
 
+import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.model.Carruer;
 import com.fruitpay.allpayInvoice.model.Customer;
 import com.fruitpay.allpayInvoice.model.Invoice;
@@ -48,9 +49,11 @@ public class PostParameterMapTest {
 		Map<String, String> expected = createCarruerExpected(CarruerNum, CarruerType);
 		
 		
-		Map<String, String> actual = carruer.getParameterMap();
+		Map<String, String> actual1 = carruer.getParameterMap();
+		Map<String, String> actual2 = new ParameterMapBuilder().build(carruer);
 		
-		assertEquals(expected, actual);
+		assertEquals(expected, actual1);
+		assertEquals(expected, actual2);
 	}
 	
 	private Map<String, String> createCarruerExpected(String CarruerNum,
@@ -93,41 +96,14 @@ public class PostParameterMapTest {
 		Map<String, String> expected = createCustomerExpected(CustomerID,
 				CustomerIdentifier, CustomerName, CustomerAddr, CustomerPhone,
 				CustomerEmail);
-		Map<String, String> expectedUrlEncode = createUrlEncodeCustomerExpected(CustomerID,
-				CustomerIdentifier, CustomerName, CustomerAddr, CustomerPhone,
-				CustomerEmail);
+
+		Map<String, String> actual1 = customer.getParameterMap();
+		Map<String, String> actual2 = new ParameterMapBuilder().build(customer);
 		
-		Map<String, String> actual = customer.getParameterMap();
-		Map<String, String> actualUrlEncode = customer.getUrlEncodeParameterMap();
-		
-		assertEquals(expected, actual);
-		assertEquals(expectedUrlEncode, actualUrlEncode);
+		assertEquals(expected, actual1);
+		assertEquals(expected, actual2);
 	}
 
-	private Map<String, String> createUrlEncodeCustomerExpected(
-			String CustomerID, String CustomerIdentifier, String CustomerName,
-			String CustomerAddr, String CustomerPhone, String CustomerEmail) throws UnsupportedEncodingException {
-		Map<String, String> expected = new TreeMap<String, String>();
-		if(CustomerID != null){
-			expected.put("CustomerID", CustomerID);
-		}
-		if(CustomerIdentifier != null){
-			expected.put("CustomerIdentifier", CustomerIdentifier);
-		}
-		if(CustomerName != null){
-			expected.put("CustomerName", AllpayURLEncoder.encode(CustomerName, "UTF-8"));
-		}
-		if(CustomerAddr != null){
-			expected.put("CustomerAddr", AllpayURLEncoder.encode(CustomerAddr, "UTF-8"));
-		}
-		if(CustomerPhone != null){
-			expected.put("CustomerPhone", CustomerPhone);
-		}
-		if(CustomerEmail != null){
-			expected.put("CustomerEmail", AllpayURLEncoder.encode(CustomerEmail, "UTF-8"));
-		}
-		return expected;
-	}
 
 	private Map<String, String> createCustomerExpected(String CustomerID,
 			String CustomerIdentifier, String CustomerName,
@@ -195,68 +171,13 @@ public class PostParameterMapTest {
 		Map<String, String> expected = createInvoiceExpected(RelateNumber,
 				ClearanceMark, Print, Donation, LoveCode, TaxType, SalesAmount,
 				InvoiceRemark, InvType, vat, TimeStamp);
-		Map<String, String> expectedUrlEncode = createUrlEncodeInvoiceExpected(RelateNumber,
-				ClearanceMark, Print, Donation, LoveCode, TaxType, SalesAmount,
-				InvoiceRemark, InvType, vat, TimeStamp);
-
 		
-		Map<String, String> actual = invoice.getParameterMap();
-		Map<String, String> actualUrlEncode = invoice.getUrlEncodeParameterMap();
+		Map<String, String> actual1 = invoice.getParameterMap();
+		Map<String, String> actual2 = new ParameterMapBuilder().build(invoice);
 		
-		assertEquals(expected, actual);
-		assertEquals(expectedUrlEncode, actualUrlEncode);
+		assertEquals(expected, actual1);
+		assertEquals(expected, actual2);
 			
-	}
-
-	private Map<String, String> createUrlEncodeInvoiceExpected(
-			String RelateNumber, CustomsClearanceMarkEnum ClearanceMark,
-			PrintEnum Print, DonationEnum Donation, String LoveCode,
-			TaxTypeEnum TaxType, Integer SalesAmount, String InvoiceRemark,
-			InvTypeEnum InvType, VatEnum vat, Date TimeStamp) throws UnsupportedEncodingException {
-		Map<String, String> expected = new TreeMap<String, String>();
-		
-		expected.put("ItemName", "");
-		expected.put("ItemCount", "");
-		expected.put("ItemWord", "");
-		expected.put("ItemPrice", "");
-		expected.put("ItemTaxType", "");
-		expected.put("ItemAmount", "");
-		expected.put("ItemRemark", "");
-		
-		if(TimeStamp != null){
-			expected.put("TimeStamp", String.valueOf(TimeStamp.getTime()));
-		}
-		if(RelateNumber != null){
-			expected.put("RelateNumber", RelateNumber);
-		}
-		if(ClearanceMark != null){
-			expected.put("ClearanceMark", ClearanceMark.value());
-		}
-		if(Print != null){
-			expected.put("Print", Print.value());
-		}
-		if(Donation != null){
-			expected.put("Donation", Donation.value());
-		}
-		if(LoveCode != null){
-			expected.put("LoveCode", LoveCode);
-		}
-		if(TaxType != null){
-			expected.put("TaxType", TaxType.value());
-		}
-		if(SalesAmount != null){
-			expected.put("SalesAmount", SalesAmount.toString());
-		}
-		if(InvoiceRemark != null){
-			expected.put("InvoiceRemark", AllpayURLEncoder.encode(InvoiceRemark,"UTF-8"));
-		}
-		if(InvType != null){
-			expected.put("InvType", InvType.value());
-		}
-		if(vat != null){
-			expected.put("vat", vat.value());
-		}
-		return expected;
 	}
 
 	private Map<String, String> createInvoiceExpected(String RelateNumber,
@@ -267,16 +188,16 @@ public class PostParameterMapTest {
 			Invoice.VatEnum vat, Date TimeStamp) {
 		Map<String, String> expected = new TreeMap<String, String>();
 		
-		expected.put("ItemName", "");
-		expected.put("ItemCount", "");
-		expected.put("ItemWord", "");
-		expected.put("ItemPrice", "");
-		expected.put("ItemTaxType", "");
-		expected.put("ItemAmount", "");
-		expected.put("ItemRemark", "");
+//		expected.put("ItemName", "");
+//		expected.put("ItemCount", "");
+//		expected.put("ItemWord", "");
+//		expected.put("ItemPrice", "");
+//		expected.put("ItemTaxType", "");
+//		expected.put("ItemAmount", "");
+//		expected.put("ItemRemark", "");
 		
 		if(TimeStamp != null){
-			expected.put("TimeStamp", String.valueOf(TimeStamp.getTime()));
+			expected.put("TimeStamp", String.valueOf(TimeStamp.getTime()/1000));
 		}
 		if(RelateNumber != null){
 			expected.put("RelateNumber", RelateNumber);
