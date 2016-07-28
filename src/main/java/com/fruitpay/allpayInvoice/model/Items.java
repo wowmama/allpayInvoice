@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
+import com.fruitpay.allpayInvoice.machine.MachineType;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 
 public class Items implements PostParameterMap{
@@ -31,13 +32,13 @@ public class Items implements PostParameterMap{
 	
 
 
-	public String getItemRemark() {
+	public String getItemRemark() throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		for(Item item : items){
 			sb.append((item.getItemRemark() == null ? "" : item.getItemRemark()) + "|");
 		}
 		if(items.size() > 0){
-			return sb.substring(0, sb.length() - 1);
+			return AllpayURLEncoder.encode(sb.substring(0, sb.length() - 1),"UTF-8");
 		}else{
 			return "";
 		}
@@ -79,13 +80,13 @@ public class Items implements PostParameterMap{
 		}
 	}
 
-	public String getItemWord() {
+	public String getItemWord() throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		for(Item item : items){
 			sb.append((item.getItemWord() == null ? "" : item.getItemWord()) + "|");
 		}
 		if(items.size() > 0){
-			return sb.substring(0, sb.length() - 1);
+			return AllpayURLEncoder.encode(sb.substring(0, sb.length() - 1),"UTF-8");
 		}else{
 			return "";
 		}
@@ -103,22 +104,22 @@ public class Items implements PostParameterMap{
 		}
 	}
 
-	public String getItemName() {
+	public String getItemName() throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 		for(Item item : items){
 			sb.append((item.getItemName() == null ? "" : item.getItemName()) + "|");
 		}
 		if(items.size() > 0){
-			return sb.substring(0, sb.length() - 1);
+			return AllpayURLEncoder.encode(sb.substring(0, sb.length() - 1),"UTF-8");
 		}else{
 			return "";
 		}
 	}
 	
 	@Override
-	public Map<String, String> getParameterMap()
+	public Map<String, String> getParameterMap(MachineType machineType)
 			throws IllegalArgumentException, IllegalAccessException,
-			NoSuchMethodException, SecurityException, InvocationTargetException {
+			NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
 		Map<String, String> parameterMap = new TreeMap<String, String>();
 		if(items.size() > 0){
 			parameterMap.put("ItemName", getItemName());

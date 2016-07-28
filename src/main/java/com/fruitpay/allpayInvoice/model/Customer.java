@@ -1,19 +1,27 @@
 package com.fruitpay.allpayInvoice.model;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
+import com.fruitpay.allpayInvoice.builder.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
+import com.fruitpay.allpayInvoice.machine.MachineType;
 
 public class Customer implements PostParameterMap{
-	@PostParameterName(name="CustomerID") private String customerId;
-	@PostParameterName(name="CustomerIdentifier") private String customerIdentifier;
-	@PostParameterName(name="CustomerName") private String customerName;
-	@PostParameterName(name="CustomerAddr") private String customerAddr;
-	@PostParameterName(name="CustomerPhone") private String customerPhone;
-	@PostParameterName(name="CustomerEmail") private String customerEmail;
+	@PostParameterName(name="CustomerID",method={MachineType.CREATE}) 
+	private String customerId;
+	@PostParameterName(name="CustomerIdentifier",method={MachineType.CREATE}) 
+	private String customerIdentifier;
+	@PostParameterName(name="CustomerName",method={MachineType.CREATE}) 
+	private String customerName;
+	@PostParameterName(name="CustomerAddr",method={MachineType.CREATE}) 
+	private String customerAddr;
+	@PostParameterName(name="CustomerPhone",method={MachineType.CREATE}) 
+	private String customerPhone;
+	@PostParameterName(name="CustomerEmail",method={MachineType.CREATE}) 
+	private String customerEmail;
 	
 	public String getCustomerId() {
 		return customerId;
@@ -57,9 +65,9 @@ public class Customer implements PostParameterMap{
 		this.customerEmail = customerEmail;
 		return this;
 	}
-	public Map<String, String> getParameterMap()
+	public Map<String, String> getParameterMap(MachineType machineType)
 			throws IllegalArgumentException, IllegalAccessException,
-			NoSuchMethodException, SecurityException, InvocationTargetException {
-		return new ParameterMapBuilder().build(this);
+			NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
+		return new ParameterMapBuilder(machineType).build(this);
 	}
 }

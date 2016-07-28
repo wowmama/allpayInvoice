@@ -1,66 +1,62 @@
 package com.fruitpay.allpayInvoice.model;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import com.fruitpay.allpayInvoice.InvoiceMachine;
-import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
-import com.fruitpay.allpayInvoice.util.MD5Digest;
+import com.fruitpay.allpayInvoice.machine.InvoiceMachine;
+import com.fruitpay.allpayInvoice.machine.MachineFactory;
+import com.fruitpay.allpayInvoice.machine.MachineType;
 
 public class Main {
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchAlgorithmException, IOException{
-		System.setProperty("http.proxyHost", "127.0.0.1");
-	    System.setProperty("https.proxyHost", "127.0.0.1");
-	    System.setProperty("http.proxyPort", "8888");
-	    System.setProperty("https.proxyPort", "8888");
-		
 		
 		String merchantId = "2000132";
 	    String hashKey = "ejCk326UnaZWKisg";
 	    String hashIV = "q9jcZX8Ib9LM8wYk";
-	    String postUrl = "http://einvoice-stage.allpay.com.tw/Invoice/Issue";
 		
-	    InvoiceMachine invoiceMachine = new InvoiceMachine()
+	    InvoiceMachine invoiceMachine = MachineFactory.getInvoiceMachine(MachineType.QUERY)
 	    	.setHashKey(hashKey)
 	    	.setHashIV(hashIV)
-			.setMerchantId(merchantId)
-			.setPostUrl(postUrl);
+			.setMerchantId(merchantId);
 		
-		Invoice invoice = invoiceMachine.createInvoice()
-				.setRelateNumber("MYINVOICE123460")
+		Invoice invoice = new Invoice()
+				.setRelateNumber("MYINVOICE123465")
 				.setInvType(Invoice.InvTypeEnum.NORMAL)
-				.setSalesAmount(100)
+				.setSalesAmount(2200)
+				.setReason("測試")
+				.setInvoiceNumber("JK00002424")
 				.setTimeStamp(new Date());
-
-		Customer customer = invoiceMachine.createCustomer()
-				.setCustomerName("customerName")
-				.setCustomerAddr("customerAddr")
-				.setCustomerEmail("test@yahoo.com.tw")
-				.setCustomerId("")
+		URLDecoder.decode("");
+		Customer customer = invoice.getCustomer()
+				.setCustomerName("王小明")
+				.setCustomerAddr("台北市")
+				.setCustomerEmail("john@yahoo.com.tw")
+				.setCustomerId("john19110101")
 				.setCustomerPhone("0912345678");
 		
 		
-		Carruer carruer = invoiceMachine.createCarruer();
-		
-		Item item = invoiceMachine.createItem()
-				.setItemName("test_ktv")
-				.setItemCount(1)
+		Item item = invoice.createItem()
+				.setItemName("移動ktv")
+				.setItemCount(2)
 				.setItemPrice(100)
-				.setItemAmount(100)
-				.setItemWord("piece")
-				.setItemRemark("test_ktv");
+				.setItemAmount(200)
+				.setItemWord("只");
 		
-		invoiceMachine.postInvoice();
+		invoice.createItem()
+			.setItemName("移動音響")
+			.setItemCount(1)
+			.setItemPrice(2000)
+			.setItemAmount(2000)
+			.setItemWord("個")
+			.setItemRemark("二手");
+		
+		Map<String, String> response = invoiceMachine.post(invoice);
+		
+		response.forEach((k, v)->System.out.println("Key : " + k + ", Value : " + URLDecoder.decode(v, "UTF-8")));
     }
 	
 }

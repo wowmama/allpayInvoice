@@ -1,38 +1,85 @@
 package com.fruitpay.allpayInvoice.model;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
 
-import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
+import com.fruitpay.allpayInvoice.builder.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
+import com.fruitpay.allpayInvoice.machine.MachineType;
 
 public class Invoice implements PostParameterMap{
-	@PostParameterName(name="TimeStamp") private Date timeStamp;
-	@PostParameterName(name="RelateNumber") private String relateNumber;
+	@PostParameterName(name="TimeStamp",method={MachineType.CREATE,MachineType.CANCEL,MachineType.QUERY}) 
+	private Date timeStamp;
+	
+	@PostParameterName(name="RelateNumber",method={MachineType.CREATE,MachineType.QUERY}) 
+	private String relateNumber;
+	
+	@PostParameterName(method={MachineType.CREATE}) 
 	private Customer customer;
-	@PostParameterName(name="ClearanceMark") private CustomsClearanceMarkEnum clearanceMark;
-	@PostParameterName(name="Print") private PrintEnum print;
-	@PostParameterName(name="Donation") private DonationEnum donation;
-	@PostParameterName(name="LoveCode") private String loveCode;
+	
+	@PostParameterName(name="ClearanceMark",method={MachineType.CREATE}) 
+	private CustomsClearanceMarkEnum clearanceMark;
+	
+	@PostParameterName(name="Print",method={MachineType.CREATE}) 
+	private PrintEnum print;
+	
+	@PostParameterName(name="Donation",method={MachineType.CREATE}) 
+	private DonationEnum donation;
+	
+	@PostParameterName(name="LoveCode",method={MachineType.CREATE}) 
+	private String loveCode;
+	
+	@PostParameterName(method={MachineType.CREATE}) 
 	private Carruer carruer;
-	@PostParameterName(name="TaxType") private TaxTypeEnum taxType;
-	@PostParameterName(name="SalesAmount") private Integer salesAmount;
-	@PostParameterName(name="InvoiceRemark") private String invoiceRemark;
+	
+	@PostParameterName(name="TaxType",method={MachineType.CREATE}) 
+	private TaxTypeEnum taxType;
+	
+	@PostParameterName(name="SalesAmount",method={MachineType.CREATE}) 
+	private Integer salesAmount;
+	
+	@PostParameterName(name="InvoiceRemark",method={MachineType.CREATE}) 
+	private String invoiceRemark;
+	
+	@PostParameterName(method={MachineType.CREATE}) 
 	private Items itemList;
-	@PostParameterName(name="InvType") private InvTypeEnum invType;
-	@PostParameterName(name="vat") private VatEnum vat;
+	
+	@PostParameterName(name="InvType",method={MachineType.CREATE}) 
+	private InvTypeEnum invType;
+	
+	@PostParameterName(name="vat",method={MachineType.CREATE}) 
+	private VatEnum vat;
+	
+	@PostParameterName(name="Reason",method={MachineType.CANCEL}) 
+	private String reason;
+	
+	@PostParameterName(name="InvoiceNumber",method={MachineType.CANCEL}) 
+	private String invoiceNumber;
 	
 	
+	
+
 	public Invoice(){
+		customer = new Customer();
+		carruer = new Carruer();
+		itemList = new Items();
 		//預設為不列印、不捐贈、應稅、一般稅額
-//		print = PrintEnum.NO;
-//		donation = DonationEnum.NO;
-//		taxType = TaxTypeEnum.TAXABLE;
-//		invType = InvTypeEnum.NORMAL;
-//		itemList = new Items();
+		print = PrintEnum.NO;
+		donation = DonationEnum.NO;
+		taxType = TaxTypeEnum.TAXABLE;
+		invType = InvTypeEnum.NORMAL;
+		itemList = new Items();
 	}
+	
+	public Item createItem(){
+		Item item = new Item();
+		itemList.addItem(item);
+		return item;
+	}
+	
 	
 	public Date getTimeStamp() {
 		return timeStamp;
@@ -76,6 +123,20 @@ public class Invoice implements PostParameterMap{
 	public InvTypeEnum getInvType() {
 		return invType;
 	}
+	public String getReason() {
+		return reason;
+	}
+
+	
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public Invoice setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+		return this;
+	}
+
 	public Invoice setTimeStamp(Date timeStamp) {
 		this.timeStamp = timeStamp;
 		return this;
@@ -132,7 +193,10 @@ public class Invoice implements PostParameterMap{
 		this.invType = invType;
 		return this;
 	}
-	
+	public Invoice setReason(String reason) {
+		this.reason = reason;
+		return this;
+	}
 	
 	/**
 	 * 字軌類別
@@ -264,9 +328,9 @@ public class Invoice implements PostParameterMap{
 			return clearanceMark.toString();
 		}
 	}
-	public Map<String, String> getParameterMap()
+	public Map<String, String> getParameterMap(MachineType machineType)
 			throws IllegalArgumentException, IllegalAccessException,
-			NoSuchMethodException, SecurityException, InvocationTargetException {
-		return new ParameterMapBuilder().build(this);
+			NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException{
+		return new ParameterMapBuilder(machineType).build(this);
 	}
 }

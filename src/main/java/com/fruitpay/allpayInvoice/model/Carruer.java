@@ -1,16 +1,20 @@
 package com.fruitpay.allpayInvoice.model;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import com.fruitpay.allpayInvoice.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.annotations.PostParameterName;
+import com.fruitpay.allpayInvoice.builder.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
+import com.fruitpay.allpayInvoice.machine.MachineType;
 
 public class Carruer implements PostParameterMap{
 	
-	@PostParameterName(name="CarruerNum") private String carruerNum;
-	@PostParameterName(name="CarruerType") private CarruerTypeEnum carruerType;
+	@PostParameterName(name="CarruerNum",method={MachineType.CREATE}) 
+	private String carruerNum;
+	@PostParameterName(name="CarruerType",method={MachineType.CREATE}) 
+	private CarruerTypeEnum carruerType;
 	
 	public String getCarruerNum() {
 		return carruerNum;
@@ -52,7 +56,7 @@ public class Carruer implements PostParameterMap{
 		}
 	}
 
-	public Map<String, String> getParameterMap() throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException {
-		return new ParameterMapBuilder().build(this);
+	public Map<String, String> getParameterMap(MachineType machineType) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
+		return new ParameterMapBuilder(machineType).build(this);
 	}
 }
