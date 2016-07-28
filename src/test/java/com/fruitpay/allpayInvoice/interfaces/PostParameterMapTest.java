@@ -4,23 +4,17 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.junit.runner.RunWith;
 
-import com.fruitpay.allpayInvoice.ParameterMapBuilder;
+import com.fruitpay.allpayInvoice.builder.ParameterMapBuilder;
+import com.fruitpay.allpayInvoice.machine.MachineType;
 import com.fruitpay.allpayInvoice.model.Carruer;
 import com.fruitpay.allpayInvoice.model.Customer;
 import com.fruitpay.allpayInvoice.model.Invoice;
-import com.fruitpay.allpayInvoice.model.Invoice.CustomsClearanceMarkEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.DonationEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.InvTypeEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.PrintEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.TaxTypeEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.VatEnum;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 import com.googlecode.zohhak.api.TestWith;
 import com.googlecode.zohhak.api.runners.ZohhakRunner;
@@ -40,7 +34,7 @@ public class PostParameterMapTest {
 			"         null|                        null",
 		}
 	)
-	public void testCarruerGetParameterMap(String CarruerNum, Carruer.CarruerTypeEnum CarruerType) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException {
+	public void testCarruerGetParameterMap(String CarruerNum, Carruer.CarruerTypeEnum CarruerType) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
 		Carruer carruer = new Carruer()
 			.setCarruerNum(CarruerNum)
 			.setCarruerType(CarruerType);
@@ -49,21 +43,21 @@ public class PostParameterMapTest {
 		Map<String, String> expected = createCarruerExpected(CarruerNum, CarruerType);
 		
 		
-		Map<String, String> actual1 = carruer.getParameterMap();
-		Map<String, String> actual2 = new ParameterMapBuilder().build(carruer);
+		Map<String, String> actual1 = carruer.getParameterMap(MachineType.CREATE);
+		Map<String, String> actual2 = new ParameterMapBuilder(MachineType.CREATE).build(carruer);
 		
 		assertEquals(expected, actual1);
 		assertEquals(expected, actual2);
 	}
 	
 	private Map<String, String> createCarruerExpected(String CarruerNum,
-			Carruer.CarruerTypeEnum CarruerType) {
+			Carruer.CarruerTypeEnum CarruerType) throws UnsupportedEncodingException {
 		Map<String, String> expected = new TreeMap<String, String>();
 		if(CarruerNum != null){
-			expected.put("CarruerNum", CarruerNum);
+			expected.put("CarruerNum", AllpayURLEncoder.encode(CarruerNum,"UTF-8"));
 		}
 		if(CarruerType != null){
-			expected.put("CarruerType", CarruerType.value());
+			expected.put("CarruerType", AllpayURLEncoder.encode(CarruerType.value(),"UTF-8"));
 		}
 		return expected;
 	}
@@ -97,8 +91,8 @@ public class PostParameterMapTest {
 				CustomerIdentifier, CustomerName, CustomerAddr, CustomerPhone,
 				CustomerEmail);
 
-		Map<String, String> actual1 = customer.getParameterMap();
-		Map<String, String> actual2 = new ParameterMapBuilder().build(customer);
+		Map<String, String> actual1 = customer.getParameterMap(MachineType.CREATE);
+		Map<String, String> actual2 = new ParameterMapBuilder(MachineType.CREATE).build(customer);
 		
 		assertEquals(expected, actual1);
 		assertEquals(expected, actual2);
@@ -107,25 +101,25 @@ public class PostParameterMapTest {
 
 	private Map<String, String> createCustomerExpected(String CustomerID,
 			String CustomerIdentifier, String CustomerName,
-			String CustomerAddr, String CustomerPhone, String CustomerEmail) {
+			String CustomerAddr, String CustomerPhone, String CustomerEmail) throws UnsupportedEncodingException {
 		Map<String, String> expected = new TreeMap<String, String>();
 		if(CustomerID != null){
-			expected.put("CustomerID", CustomerID);
+			expected.put("CustomerID", AllpayURLEncoder.encode(CustomerID,"UTF-8"));
 		}
 		if(CustomerIdentifier != null){
-			expected.put("CustomerIdentifier", CustomerIdentifier);
+			expected.put("CustomerIdentifier", AllpayURLEncoder.encode(CustomerIdentifier,"UTF-8"));
 		}
 		if(CustomerName != null){
-			expected.put("CustomerName", CustomerName);
+			expected.put("CustomerName", AllpayURLEncoder.encode(CustomerName,"UTF-8"));
 		}
 		if(CustomerAddr != null){
-			expected.put("CustomerAddr", CustomerAddr);
+			expected.put("CustomerAddr", AllpayURLEncoder.encode(CustomerAddr,"UTF-8"));
 		}
 		if(CustomerPhone != null){
-			expected.put("CustomerPhone", CustomerPhone);
+			expected.put("CustomerPhone", AllpayURLEncoder.encode(CustomerPhone,"UTF-8"));
 		}
 		if(CustomerEmail != null){
-			expected.put("CustomerEmail", CustomerEmail);
+			expected.put("CustomerEmail", AllpayURLEncoder.encode(CustomerEmail,"UTF-8"));
 		}
 		return expected;
 	}
@@ -172,8 +166,8 @@ public class PostParameterMapTest {
 				ClearanceMark, Print, Donation, LoveCode, TaxType, SalesAmount,
 				InvoiceRemark, InvType, vat, TimeStamp);
 		
-		Map<String, String> actual1 = invoice.getParameterMap();
-		Map<String, String> actual2 = new ParameterMapBuilder().build(invoice);
+		Map<String, String> actual1 = invoice.getParameterMap(MachineType.CREATE);
+		Map<String, String> actual2 = new ParameterMapBuilder(MachineType.CREATE).build(invoice);
 		
 		assertEquals(expected, actual1);
 		assertEquals(expected, actual2);
@@ -185,7 +179,7 @@ public class PostParameterMapTest {
 			Invoice.PrintEnum Print, Invoice.DonationEnum Donation,
 			String LoveCode, Invoice.TaxTypeEnum TaxType, Integer SalesAmount,
 			String InvoiceRemark, Invoice.InvTypeEnum InvType,
-			Invoice.VatEnum vat, Date TimeStamp) {
+			Invoice.VatEnum vat, Date TimeStamp) throws UnsupportedEncodingException {
 		Map<String, String> expected = new TreeMap<String, String>();
 		
 //		expected.put("ItemName", "");
@@ -197,37 +191,37 @@ public class PostParameterMapTest {
 //		expected.put("ItemRemark", "");
 		
 		if(TimeStamp != null){
-			expected.put("TimeStamp", String.valueOf(TimeStamp.getTime()/1000));
+			expected.put("TimeStamp", AllpayURLEncoder.encode(String.valueOf(TimeStamp.getTime()/1000),"UTF-8"));
 		}
 		if(RelateNumber != null){
-			expected.put("RelateNumber", RelateNumber);
+			expected.put("RelateNumber", AllpayURLEncoder.encode(RelateNumber,"UTF-8"));
 		}
 		if(ClearanceMark != null){
-			expected.put("ClearanceMark", ClearanceMark.value());
+			expected.put("ClearanceMark", AllpayURLEncoder.encode(ClearanceMark.value(),"UTF-8"));
 		}
 		if(Print != null){
-			expected.put("Print", Print.value());
+			expected.put("Print", AllpayURLEncoder.encode(Print.value(),"UTF-8"));
 		}
 		if(Donation != null){
-			expected.put("Donation", Donation.value());
+			expected.put("Donation", AllpayURLEncoder.encode(Donation.value(),"UTF-8"));
 		}
 		if(LoveCode != null){
-			expected.put("LoveCode", LoveCode);
+			expected.put("LoveCode", AllpayURLEncoder.encode(LoveCode,"UTF-8"));
 		}
 		if(TaxType != null){
-			expected.put("TaxType", TaxType.value());
+			expected.put("TaxType", AllpayURLEncoder.encode(TaxType.value(),"UTF-8"));
 		}
 		if(SalesAmount != null){
-			expected.put("SalesAmount", SalesAmount.toString());
+			expected.put("SalesAmount", AllpayURLEncoder.encode(SalesAmount.toString(),"UTF-8"));
 		}
 		if(InvoiceRemark != null){
-			expected.put("InvoiceRemark", InvoiceRemark);
+			expected.put("InvoiceRemark", AllpayURLEncoder.encode(InvoiceRemark,"UTF-8"));
 		}
 		if(InvType != null){
-			expected.put("InvType", InvType.value());
+			expected.put("InvType", AllpayURLEncoder.encode(InvType.value(),"UTF-8"));
 		}
 		if(vat != null){
-			expected.put("vat", vat.value());
+			expected.put("vat", AllpayURLEncoder.encode(vat.value(),"UTF-8"));
 		}
 		return expected;
 	}

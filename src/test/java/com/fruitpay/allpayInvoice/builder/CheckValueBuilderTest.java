@@ -1,4 +1,4 @@
-package com.fruitpay.allpayInvoice.util;
+package com.fruitpay.allpayInvoice.builder;
 
 import static org.junit.Assert.fail;
 
@@ -24,7 +24,6 @@ public class CheckValueBuilderTest {
 		parameterMap.put("", "");
 		parameterMap.put("", "");
 		parameterMap.put("", "");
-		fail("Not yet implemented");
 	}
 
 }

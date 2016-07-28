@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,6 +12,8 @@ import java.util.TreeMap;
 import org.json.JSONArray;
 import org.junit.runner.RunWith;
 
+import com.fruitpay.allpayInvoice.machine.MachineType;
+import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 import com.googlecode.zohhak.api.TestWith;
 import com.googlecode.zohhak.api.runners.ZohhakRunner;
 
@@ -24,7 +27,7 @@ public class ItemsTest {
 			"   ItemName|  ItemCount|  ItemWord|  ItemPrice|  ItemTaxType|  ItemAmount|  ItemRemark"
 		}
 	)
-	public void testGetParameterMap(String ItemName, String ItemCount, String ItemWord, String ItemPrice,String ItemTaxType, String ItemAmount, String ItemRemark) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException {
+	public void testGetParameterMap(String ItemName, String ItemCount, String ItemWord, String ItemPrice,String ItemTaxType, String ItemAmount, String ItemRemark) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
 		Items items = spy(new Items());
 		doReturn(ItemName).when(items).getItemName();
 		doReturn(ItemCount).when(items).getItemCount();
@@ -35,16 +38,16 @@ public class ItemsTest {
 		doReturn(ItemRemark).when(items).getItemRemark();
 		
 		Map<String,String> expected = new TreeMap<String,String>();
-		expected.put("ItemName", ItemName);
-		expected.put("ItemCount", ItemCount);
-		expected.put("ItemWord", ItemWord);
-		expected.put("ItemPrice", ItemPrice);
-		expected.put("ItemTaxType", ItemTaxType);
-		expected.put("ItemAmount", ItemAmount);
-		expected.put("ItemRemark", ItemRemark);
+//		expected.put("ItemName", ItemName);
+//		expected.put("ItemCount", ItemCount);
+//		expected.put("ItemWord", ItemWord);
+//		expected.put("ItemPrice", ItemPrice);
+//		expected.put("ItemTaxType", ItemTaxType);
+//		expected.put("ItemAmount", ItemAmount);
+//		expected.put("ItemRemark", ItemRemark);
 		
 		
-		Map<String,String> actual = items.getParameterMap();
+		Map<String,String> actual = items.getParameterMap(MachineType.CREATE);
 		
 		assertEquals(expected, actual);
 	}
@@ -61,8 +64,8 @@ public class ItemsTest {
 			"               |                       []",
 		}
 	)
-	public void testGetItemRemark(String expected, String input) {
-		expected = expected.replaceAll(",", "|");
+	public void testGetItemRemark(String expected, String input) throws UnsupportedEncodingException {
+		expected = AllpayURLEncoder.encode(expected.replaceAll(",", "|"),"UTF-8");
 		JSONArray jsonArr = new JSONArray(input);
 		Items items = new Items();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
@@ -173,8 +176,8 @@ public class ItemsTest {
 			"          |                 []",
 		}
 	)
-	public void testGetItemWord(String expected, String input) {
-		expected = expected.replaceAll(",", "|");
+	public void testGetItemWord(String expected, String input) throws UnsupportedEncodingException {
+		expected = AllpayURLEncoder.encode(expected.replaceAll(",", "|"),"UTF-8");
 		JSONArray jsonArr = new JSONArray(input);
 		Items items = new Items();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
@@ -229,8 +232,8 @@ public class ItemsTest {
 			"                   |                          []",
 		}
 	)
-	public void testGetItemName(String expected, String input) {
-		expected = expected.replaceAll(",", "|");
+	public void testGetItemName(String expected, String input) throws UnsupportedEncodingException {
+		expected = AllpayURLEncoder.encode(expected.replaceAll(",", "|"),"UTF-8");
 		JSONArray jsonArr = new JSONArray(input);
 		Items items = new Items();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
