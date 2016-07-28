@@ -1,4 +1,4 @@
-package com.fruitpay.allpayInvoice;
+package com.fruitpay.allpayInvoice.machine;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,56 +8,40 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.log4j.Logger;
 
-import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
-import com.fruitpay.allpayInvoice.model.Carruer;
-import com.fruitpay.allpayInvoice.model.Customer;
+import com.fruitpay.allpayInvoice.builder.CheckValueBuilder;
 import com.fruitpay.allpayInvoice.model.Invoice;
-import com.fruitpay.allpayInvoice.model.Item;
-import com.fruitpay.allpayInvoice.model.Items;
-import com.fruitpay.allpayInvoice.model.Invoice.DonationEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.InvTypeEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.PrintEnum;
-import com.fruitpay.allpayInvoice.model.Invoice.TaxTypeEnum;
-import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
+import com.fruitpay.allpayInvoice.util.ParameterParser;
 
-public class InvoiceMachine implements PostParameterMap{
+public class InvoiceMachine {
 	private static final Logger log = Logger.getLogger(InvoiceMachine.class);
-	
 	private String postUrl;
+	private MachineType machineType;
 	private String merchantId;
 	private String hashKey;
 	private String hashIV;
-	private Invoice invoice;
 	
-	public Invoice createInvoice(){
-
-		//預設為不列印、不捐贈、應稅、一般稅額
-		Invoice invoice = new Invoice();
-		invoice.setPrint(PrintEnum.NO);
-		invoice.setDonation(DonationEnum.NO);
-		invoice.setTaxType(TaxTypeEnum.TAXABLE);
-		invoice.setInvType(InvTypeEnum.NORMAL);
-		invoice.setItemList(new Items());
-		
-		setInvoice(invoice);
-		return invoice;
+	
+	
+	public InvoiceMachine(String postUrl, MachineType machineType) {
+		super();
+		this.postUrl = postUrl;
+		this.machineType = machineType;
 	}
-	
-	public void postInvoice() throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, NoSuchAlgorithmException, MalformedURLException, IOException{
-		
-		HttpURLConnection connection = (HttpURLConnection)new URL(postUrl).openConnection();
-		String urlParameters = getUrlParameters();
-		
+
+	public Map<String,String> post(Invoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, NoSuchAlgorithmException, MalformedURLException, IOException{
+		HttpsURLConnection connection = (HttpsURLConnection)new URL(postUrl).openConnection();
+		String urlParameters = getUrlParameters(invoice);
+		System.out.println("urlParameters" + urlParameters);
 		connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setUseCaches(false);
@@ -86,12 +70,16 @@ public class InvoiceMachine implements PostParameterMap{
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
+		System.out.println(response);
+		
 		in.close();
+		
+		return ParameterParser.parse(response.toString());
 		
 	}
 	
-	public String getCheckMacValue() throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException, NoSuchAlgorithmException{
-		Map<String, String> parameterMap = invoice.getParameterMap();
+	public String getCheckMacValue(Invoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException, NoSuchAlgorithmException{
+		Map<String, String> parameterMap = invoice.getParameterMap(machineType);
 		parameterMap.put("MerchantID", merchantId);
 		
 		String checkMacValue = new CheckValueBuilder()
@@ -102,13 +90,13 @@ public class InvoiceMachine implements PostParameterMap{
 		return checkMacValue;
 	}
 	
-	public String getUrlParameters() throws IllegalAccessException,
+	public String getUrlParameters(Invoice invoice) throws IllegalAccessException,
 			NoSuchMethodException, InvocationTargetException,
 			UnsupportedEncodingException, NoSuchAlgorithmException {
 		
-		String checkMacValue = getCheckMacValue();
+		String checkMacValue = getCheckMacValue(invoice);
 		
-		Map<String, String> parameterMap = getParameterMap();
+		Map<String, String> parameterMap = getParameterMap(invoice);
 		parameterMap.put("CheckMacValue", checkMacValue);
 		
 		StringBuilder sb = new StringBuilder();
@@ -117,21 +105,14 @@ public class InvoiceMachine implements PostParameterMap{
 		Arrays.sort(keys);
 		
 		for(Object key : keys){
-			sb.append(key + "=" + AllpayURLEncoder.encode(parameterMap.get(key), "UTF-8") + "&");
+			sb.append(key + "=" + parameterMap.get(key) + "&");
+//			sb.append(key + "=" + AllpayURLEncoder.encode(parameterMap.get(key), "UTF-8") + "&");
 		}
 		
 		return sb.substring(0, sb.length() - 1);
 	}
 	
 	
-	public InvoiceMachine setInvoice(Invoice invoice){
-		this.invoice = invoice;
-		return this;
-	}
-	public InvoiceMachine setPostUrl(String postUrl) {
-		this.postUrl = postUrl;
-		return this;
-	}
 	public InvoiceMachine setMerchantId(String merchantId) {
 		this.merchantId = merchantId;
 		return this;
@@ -144,14 +125,13 @@ public class InvoiceMachine implements PostParameterMap{
 		this.hashIV = hashIV;
 		return this;
 	}
-	@Override
-	public Map<String, String> getParameterMap()
+	
+	public Map<String, String> getParameterMap(Invoice invoice)
 			throws IllegalArgumentException, IllegalAccessException,
-			NoSuchMethodException, SecurityException, InvocationTargetException {
-		Map<String, String> parameterMap = invoice.getParameterMap();
+			NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
+		Map<String, String> parameterMap = invoice.getParameterMap(machineType);
 		parameterMap.put("MerchantID", merchantId);
 		return parameterMap;
 	}
-	
-	
+
 }
