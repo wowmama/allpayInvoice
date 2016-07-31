@@ -21,11 +21,8 @@ public class AllpayCarruer implements PostParameterMap{
 	@PostParameterName(name="CarruerType",method={MachineType.CREATE}) 
 	private CarruerTypeEnum carruerType;
 	
-	/**
-	 * 預設為會員載具
-	 */
 	public AllpayCarruer(){
-		carruerType = CarruerTypeEnum.MEMBER;
+//		carruerType = CarruerTypeEnum.MEMBER;
 	}
 	
 	public String getCarruerNum() {
