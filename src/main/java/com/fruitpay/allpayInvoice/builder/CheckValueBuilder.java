@@ -9,6 +9,11 @@ import java.util.Map;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 import com.fruitpay.allpayInvoice.util.MD5Digest;
 
+/**
+ * 檢查碼Builder，每次跟Allpay溝通都需檢查碼機制。<br>
+ * @author Churu
+ *
+ */
 public class CheckValueBuilder {
 	private String hashKey;
 	private String hashIV;

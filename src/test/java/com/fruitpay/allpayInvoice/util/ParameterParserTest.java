@@ -17,7 +17,7 @@ public class ParameterParserTest {
 			separator="[|]",
 			value={
 				"{key1=value1, key2=value2, key3=value3, key4=vaue4} | key1=value1&key2=value2&key3=value3&key4=vaue4",
-				"  {key1=null, key2=value2, key3=value3, key4=vaue4} | key1=&key2=value2&key3=value3&key4=vaue4",
+				"  {key1=, key2=value2, key3=value3, key4=vaue4} | key1=&key2=value2&key3=value3&key4=vaue4",
 				"{InvoiceNumber=JK00002424, RtnCode=1600006, RtnMsg=作廢發票失敗(該發票已被作廢過), CheckMacValue=B011C700B1AE11F4640D959FBDA45EAD} | InvoiceNumber=JK00002424&RtnCode=1600006&RtnMsg=作廢發票失敗(該發票已被作廢過)&CheckMacValue=B011C700B1AE11F4640D959FBDA45EAD",
 			}
 		)

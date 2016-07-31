@@ -19,7 +19,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.log4j.Logger;
 
 import com.fruitpay.allpayInvoice.builder.CheckValueBuilder;
-import com.fruitpay.allpayInvoice.model.Invoice;
+import com.fruitpay.allpayInvoice.model.AllpayInvoice;
 import com.fruitpay.allpayInvoice.util.ParameterParser;
 
 public class InvoiceMachine {
@@ -38,7 +38,7 @@ public class InvoiceMachine {
 		this.machineType = machineType;
 	}
 
-	public Map<String,String> post(Invoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, NoSuchAlgorithmException, MalformedURLException, IOException{
+	public Map<String,String> post(AllpayInvoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, NoSuchAlgorithmException, MalformedURLException, IOException{
 		HttpsURLConnection connection = (HttpsURLConnection)new URL(postUrl).openConnection();
 		String urlParameters = getUrlParameters(invoice);
 		System.out.println("urlParameters" + urlParameters);
@@ -78,7 +78,7 @@ public class InvoiceMachine {
 		
 	}
 	
-	public String getCheckMacValue(Invoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException, NoSuchAlgorithmException{
+	public String getCheckMacValue(AllpayInvoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException, NoSuchAlgorithmException{
 		Map<String, String> parameterMap = invoice.getParameterMap(machineType);
 		parameterMap.put("MerchantID", merchantId);
 		
@@ -90,7 +90,7 @@ public class InvoiceMachine {
 		return checkMacValue;
 	}
 	
-	public String getUrlParameters(Invoice invoice) throws IllegalAccessException,
+	public String getUrlParameters(AllpayInvoice invoice) throws IllegalAccessException,
 			NoSuchMethodException, InvocationTargetException,
 			UnsupportedEncodingException, NoSuchAlgorithmException {
 		
@@ -126,7 +126,7 @@ public class InvoiceMachine {
 		return this;
 	}
 	
-	public Map<String, String> getParameterMap(Invoice invoice)
+	public Map<String, String> getParameterMap(AllpayInvoice invoice)
 			throws IllegalArgumentException, IllegalAccessException,
 			NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
 		Map<String, String> parameterMap = invoice.getParameterMap(machineType);

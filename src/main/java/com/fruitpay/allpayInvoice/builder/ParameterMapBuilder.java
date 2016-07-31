@@ -14,14 +14,28 @@ import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 import com.fruitpay.allpayInvoice.machine.MachineType;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 
+/**
+ * Post參數Builder<br>
+ * @author Churu
+ *
+ */
 public class ParameterMapBuilder {
 	private MachineType machineType;
 	
+	/**
+	 * 依照傳入的MachineType決定為哪種Builder(開立、作廢、查詢...等)<br>
+	 * @param machineType 開立類型
+	 */
 	public ParameterMapBuilder(MachineType machineType) {
 		super();
 		this.machineType = machineType;
 	}
-
+	
+	/**
+	 * 將傳入的PostParameterMap轉換為Post參數Map<br>
+	 * @param postParameterMap
+	 * @return {@code Map<String, String>} Post參數Map
+	 */
 	public Map<String, String> build(PostParameterMap postParameterMap) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException{
 		Map<String, String> parameterMap = new TreeMap<String, String>();
 		Field[] fields = postParameterMap.getClass().getDeclaredFields();

@@ -28,7 +28,7 @@ public class ItemsTest {
 		}
 	)
 	public void testGetParameterMap(String ItemName, String ItemCount, String ItemWord, String ItemPrice,String ItemTaxType, String ItemAmount, String ItemRemark) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
-		Items items = spy(new Items());
+		AllpayItems items = spy(new AllpayItems());
 		doReturn(ItemName).when(items).getItemName();
 		doReturn(ItemCount).when(items).getItemCount();
 		doReturn(ItemWord).when(items).getItemWord();
@@ -67,11 +67,11 @@ public class ItemsTest {
 	public void testGetItemRemark(String expected, String input) throws UnsupportedEncodingException {
 		expected = AllpayURLEncoder.encode(expected.replaceAll(",", "|"),"UTF-8");
 		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
+		AllpayItems items = new AllpayItems();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
 			String itemRemark = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
 			items.addItem(
-					new Item().setItemRemark(itemRemark));
+					new AllpayItem().setItemRemark(itemRemark));
 		}
 		
 		String actual = items.getItemRemark();
@@ -79,33 +79,33 @@ public class ItemsTest {
 		assertEquals(expected, actual);
 	}
 
-	@TestWith(
-		separator="[\\|]",
-		value={
-			// expected|              itemAmount|
-			"     1,2,3|           ['1','2','3']",
-			"     0,2,3|        ['null','2','3']",
-			"     1,0,3|        ['1','null','3']",
-			"     1,2,0|        ['1','2','null']",
-			"     0,0,0|  ['null','null','null']",
-			"          |                      []",
-		}
-	)
-	public void testGetItemAmount(String expected, String input) {
-		expected = expected.replaceAll(",", "|");
-		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
-		for(int i = 0 ; i < jsonArr.length() ; i++){
-			String str = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
-			Integer itemAmount = str == null ? null : Integer.valueOf(str);
-			items.addItem(
-					new Item().setItemAmount(itemAmount));
-		}
-		
-		String actual = items.getItemAmount();
-		
-		assertEquals(expected, actual);
-	}
+//	@TestWith(
+//		separator="[\\|]",
+//		value={
+//			// expected|              itemAmount|
+//			"     1,2,3|           ['1','2','3']",
+//			"     0,2,3|        ['null','2','3']",
+//			"     1,0,3|        ['1','null','3']",
+//			"     1,2,0|        ['1','2','null']",
+//			"     0,0,0|  ['null','null','null']",
+//			"          |                      []",
+//		}
+//	)
+//	public void testGetItemAmount(String expected, String input) {
+//		expected = expected.replaceAll(",", "|");
+//		JSONArray jsonArr = new JSONArray(input);
+//		AllpayItems items = new AllpayItems();
+//		for(int i = 0 ; i < jsonArr.length() ; i++){
+//			String str = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
+//			Integer itemAmount = str == null ? null : Integer.valueOf(str);
+//			items.addItem(
+//					new AllpayItem().setItemAmount(itemAmount));
+//		}
+//		
+//		String actual = items.getItemAmount();
+//		
+//		assertEquals(expected, actual);
+//	}
 
 	@TestWith(
 		separator="[\\|]",
@@ -123,12 +123,12 @@ public class ItemsTest {
 	public void testGetItemTaxType(String expected, String input) {
 		expected = expected.replaceAll(",", "|");
 		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
+		AllpayItems items = new AllpayItems();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
 			String itemTaxType = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
-			Invoice.TaxTypeEnum taxType = itemTaxType == null ? null : Invoice.TaxTypeEnum.valueOf(itemTaxType);
+			AllpayInvoice.TaxTypeEnum taxType = itemTaxType == null ? null : AllpayInvoice.TaxTypeEnum.valueOf(itemTaxType);
 			items.addItem(
-					new Item().setItemTaxType(taxType));
+					new AllpayItem().setItemTaxType(taxType));
 		}
 		
 		String actual = items.getItemTaxType();
@@ -151,12 +151,12 @@ public class ItemsTest {
 	public void testGetItemPrice(String expected, String input) {
 		expected = expected.replaceAll(",", "|");
 		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
+		AllpayItems items = new AllpayItems();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
 			String str = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
 			Integer itemPrice = str == null ? null : Integer.valueOf(str);
 			items.addItem(
-					new Item().setItemPrice(itemPrice));
+					new AllpayItem().setItemPrice(itemPrice));
 		}
 		
 		String actual = items.getItemPrice();
@@ -179,11 +179,11 @@ public class ItemsTest {
 	public void testGetItemWord(String expected, String input) throws UnsupportedEncodingException {
 		expected = AllpayURLEncoder.encode(expected.replaceAll(",", "|"),"UTF-8");
 		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
+		AllpayItems items = new AllpayItems();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
 			String itemRemark = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
 			items.addItem(
-					new Item().setItemWord(itemRemark));
+					new AllpayItem().setItemWord(itemRemark));
 		}
 		
 		
@@ -207,12 +207,12 @@ public class ItemsTest {
 	public void testGetItemCount(String expected, String input) {
 		expected = expected.replaceAll(",", "|");
 		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
+		AllpayItems items = new AllpayItems();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
 			String str = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
 			Integer itemCount = str == null ? null : Integer.valueOf(str);
 			items.addItem(
-					new Item().setItemCount(itemCount));
+					new AllpayItem().setItemCount(itemCount));
 		}
 		
 		String actual = items.getItemCount();
@@ -235,11 +235,11 @@ public class ItemsTest {
 	public void testGetItemName(String expected, String input) throws UnsupportedEncodingException {
 		expected = AllpayURLEncoder.encode(expected.replaceAll(",", "|"),"UTF-8");
 		JSONArray jsonArr = new JSONArray(input);
-		Items items = new Items();
+		AllpayItems items = new AllpayItems();
 		for(int i = 0 ; i < jsonArr.length() ; i++){
 			String itemName = "null".equals(jsonArr.getString(i)) ? null : jsonArr.getString(i);
 			items.addItem(
-					new Item().setItemName(itemName));
+					new AllpayItem().setItemName(itemName));
 		}
 		
 		String actual = items.getItemName();

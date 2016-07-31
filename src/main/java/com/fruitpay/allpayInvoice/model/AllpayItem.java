@@ -1,12 +1,17 @@
 package com.fruitpay.allpayInvoice.model;
 
-public class Item {
+/**
+ * 發票項目
+ * @author Churu
+ *
+ */
+public class AllpayItem {
 	private String itemName;
 	private Integer itemCount = 0;
 	private String itemWord;
 	private Integer itemPrice = 0;
-	private Invoice.TaxTypeEnum itemTaxType = Invoice.TaxTypeEnum.TAXABLE;
-	private Integer itemAmount = 0;
+	private AllpayInvoice.TaxTypeEnum itemTaxType = AllpayInvoice.TaxTypeEnum.TAXABLE;
+//	private Integer itemAmount = 0;
 	private String itemRemark;
 	
 	
@@ -22,42 +27,42 @@ public class Item {
 	public Integer getItemPrice() {
 		return itemPrice;
 	}
-	public Invoice.TaxTypeEnum getItemTaxType() {
+	public AllpayInvoice.TaxTypeEnum getItemTaxType() {
 		return itemTaxType;
 	}
 	public Integer getItemAmount() {
-		return itemAmount;
+		return itemCount * itemPrice;
 	}
 	public String getItemRemark() {
 		return itemRemark;
 	}
 	
 	
-	public Item setItemName(String itemName) {
+	public AllpayItem setItemName(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
-	public Item setItemCount(Integer itemCount) {
+	public AllpayItem setItemCount(Integer itemCount) {
 		this.itemCount = itemCount;
 		return this;
 	}
-	public Item setItemWord(String itemWord) {
+	public AllpayItem setItemWord(String itemWord) {
 		this.itemWord = itemWord;
 		return this;
 	}
-	public Item setItemPrice(Integer itemPrice) {
+	public AllpayItem setItemPrice(Integer itemPrice) {
 		this.itemPrice = itemPrice;
 		return this;
 	}
-	public Item setItemTaxType(Invoice.TaxTypeEnum itemTaxType) {
+	public AllpayItem setItemTaxType(AllpayInvoice.TaxTypeEnum itemTaxType) {
 		this.itemTaxType = itemTaxType;
 		return this;
 	}
-	public Item setItemAmount(Integer itemAmount) {
-		this.itemAmount = itemAmount;
-		return this;
-	}
-	public Item setItemRemark(String itemRemark) {
+//	public AllpayItem setItemAmount(Integer itemAmount) {
+//		this.itemAmount = itemAmount;
+//		return this;
+//	}
+	public AllpayItem setItemRemark(String itemRemark) {
 		this.itemRemark = itemRemark;
 		return this;
 	}

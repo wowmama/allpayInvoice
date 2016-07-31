@@ -12,9 +12,9 @@ import org.junit.runner.RunWith;
 
 import com.fruitpay.allpayInvoice.builder.ParameterMapBuilder;
 import com.fruitpay.allpayInvoice.machine.MachineType;
-import com.fruitpay.allpayInvoice.model.Carruer;
-import com.fruitpay.allpayInvoice.model.Customer;
-import com.fruitpay.allpayInvoice.model.Invoice;
+import com.fruitpay.allpayInvoice.model.AllpayCarruer;
+import com.fruitpay.allpayInvoice.model.AllpayCustomer;
+import com.fruitpay.allpayInvoice.model.AllpayInvoice;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 import com.googlecode.zohhak.api.TestWith;
 import com.googlecode.zohhak.api.runners.ZohhakRunner;
@@ -34,8 +34,8 @@ public class PostParameterMapTest {
 			"         null|                        null",
 		}
 	)
-	public void testCarruerGetParameterMap(String CarruerNum, Carruer.CarruerTypeEnum CarruerType) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
-		Carruer carruer = new Carruer()
+	public void testCarruerGetParameterMap(String CarruerNum, AllpayCarruer.CarruerTypeEnum CarruerType) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
+		AllpayCarruer carruer = new AllpayCarruer()
 			.setCarruerNum(CarruerNum)
 			.setCarruerType(CarruerType);
 		
@@ -51,7 +51,7 @@ public class PostParameterMapTest {
 	}
 	
 	private Map<String, String> createCarruerExpected(String CarruerNum,
-			Carruer.CarruerTypeEnum CarruerType) throws UnsupportedEncodingException {
+			AllpayCarruer.CarruerTypeEnum CarruerType) throws UnsupportedEncodingException {
 		Map<String, String> expected = new TreeMap<String, String>();
 		if(CarruerNum != null){
 			expected.put("CarruerNum", AllpayURLEncoder.encode(CarruerNum,"UTF-8"));
@@ -79,7 +79,7 @@ public class PostParameterMapTest {
 		}
 	)
 	public void testCustomerGetParameterMap(String CustomerID, String CustomerIdentifier, String CustomerName, String CustomerAddr, String CustomerPhone, String CustomerEmail) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException {
-		Customer customer = new Customer()
+		AllpayCustomer customer = new AllpayCustomer()
 			.setCustomerId(CustomerID)
 			.setCustomerIdentifier(CustomerIdentifier)
 			.setCustomerName(CustomerName)
@@ -145,11 +145,11 @@ public class PostParameterMapTest {
 
 		}
 	)
-	public void testInvoiceGetParameterMap(String RelateNumber, Invoice.CustomsClearanceMarkEnum ClearanceMark, 
-			Invoice.PrintEnum Print, Invoice.DonationEnum Donation, String LoveCode, Invoice.TaxTypeEnum TaxType,
-			Integer SalesAmount, String InvoiceRemark,  Invoice.InvTypeEnum InvType, Invoice.VatEnum vat) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException{
+	public void testInvoiceGetParameterMap(String RelateNumber, AllpayInvoice.CustomsClearanceMarkEnum ClearanceMark, 
+			AllpayInvoice.PrintEnum Print, AllpayInvoice.DonationEnum Donation, String LoveCode, AllpayInvoice.TaxTypeEnum TaxType,
+			Integer SalesAmount, String InvoiceRemark,  AllpayInvoice.InvTypeEnum InvType, AllpayInvoice.VatEnum vat) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, UnsupportedEncodingException{
 		Date TimeStamp = new Date();
-		Invoice invoice = new Invoice()
+		AllpayInvoice invoice = new AllpayInvoice()
 			.setTimeStamp(TimeStamp)
 			.setRelateNumber(RelateNumber)
 			.setClearanceMark(ClearanceMark)
@@ -175,11 +175,11 @@ public class PostParameterMapTest {
 	}
 
 	private Map<String, String> createInvoiceExpected(String RelateNumber,
-			Invoice.CustomsClearanceMarkEnum ClearanceMark,
-			Invoice.PrintEnum Print, Invoice.DonationEnum Donation,
-			String LoveCode, Invoice.TaxTypeEnum TaxType, Integer SalesAmount,
-			String InvoiceRemark, Invoice.InvTypeEnum InvType,
-			Invoice.VatEnum vat, Date TimeStamp) throws UnsupportedEncodingException {
+			AllpayInvoice.CustomsClearanceMarkEnum ClearanceMark,
+			AllpayInvoice.PrintEnum Print, AllpayInvoice.DonationEnum Donation,
+			String LoveCode, AllpayInvoice.TaxTypeEnum TaxType, Integer SalesAmount,
+			String InvoiceRemark, AllpayInvoice.InvTypeEnum InvType,
+			AllpayInvoice.VatEnum vat, Date TimeStamp) throws UnsupportedEncodingException {
 		Map<String, String> expected = new TreeMap<String, String>();
 		
 //		expected.put("ItemName", "");

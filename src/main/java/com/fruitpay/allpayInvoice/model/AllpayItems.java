@@ -11,22 +11,22 @@ import com.fruitpay.allpayInvoice.interfaces.PostParameterMap;
 import com.fruitpay.allpayInvoice.machine.MachineType;
 import com.fruitpay.allpayInvoice.util.AllpayURLEncoder;
 
-public class Items implements PostParameterMap{
-	private List<Item> items;
+public class AllpayItems implements PostParameterMap{
+	private List<AllpayItem> items;
 	
-	public Items(){
-		items = new ArrayList<Item>();
+	public AllpayItems(){
+		items = new ArrayList<AllpayItem>();
 	}
 	
-	public Items addItem(Item item){
+	public AllpayItems addItem(AllpayItem item){
 		items.add(item);
 		return this;
 	}
 	
-	public List<Item> getItems() {
+	public List<AllpayItem> getItems() {
 		return items;
 	}
-	public void setItems(List<Item> items) {
+	public void setItems(List<AllpayItem> items) {
 		this.items = items;
 	}
 	
@@ -34,7 +34,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemRemark() throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemRemark() == null ? "" : item.getItemRemark()) + "|");
 		}
 		if(items.size() > 0){
@@ -46,7 +46,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemAmount() {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemAmount() == null ? "0" : item.getItemAmount()) + "|");
 		}
 		if(items.size() > 0){
@@ -58,7 +58,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemTaxType() {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemTaxType() == null ? "" : item.getItemTaxType().value()) + "|");
 		}
 		if(items.size() > 0){
@@ -70,7 +70,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemPrice() {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemPrice() == null ? "0" : item.getItemPrice()) + "|");
 		}
 		if(items.size() > 0){
@@ -82,7 +82,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemWord() throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemWord() == null ? "" : item.getItemWord()) + "|");
 		}
 		if(items.size() > 0){
@@ -94,7 +94,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemCount() {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemCount() == null ? "0" : item.getItemCount()) + "|");
 		}
 		if(items.size() > 0){
@@ -106,7 +106,7 @@ public class Items implements PostParameterMap{
 
 	public String getItemName() throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
-		for(Item item : items){
+		for(AllpayItem item : items){
 			sb.append((item.getItemName() == null ? "" : item.getItemName()) + "|");
 		}
 		if(items.size() > 0){

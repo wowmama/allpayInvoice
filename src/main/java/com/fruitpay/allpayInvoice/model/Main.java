@@ -18,45 +18,35 @@ public class Main {
 	    String hashKey = "ejCk326UnaZWKisg";
 	    String hashIV = "q9jcZX8Ib9LM8wYk";
 		
-	    InvoiceMachine invoiceMachine = MachineFactory.getInvoiceMachine(MachineType.QUERY)
+	    InvoiceMachine invoiceMachine = MachineFactory.getInvoiceMachine(MachineType.CREATE)
 	    	.setHashKey(hashKey)
 	    	.setHashIV(hashIV)
 			.setMerchantId(merchantId);
 		
-		Invoice invoice = new Invoice()
-				.setRelateNumber("MYINVOICE123465")
-				.setInvType(Invoice.InvTypeEnum.NORMAL)
-				.setSalesAmount(2200)
-				.setReason("測試")
-				.setInvoiceNumber("JK00002424")
+		AllpayInvoice invoice = new AllpayInvoice()
+				.setRelateNumber("MYINVOICE123473")
+				.setInvType(AllpayInvoice.InvTypeEnum.NORMAL)
+				.setSalesAmount(998)
 				.setTimeStamp(new Date());
-		URLDecoder.decode("");
-		Customer customer = invoice.getCustomer()
-				.setCustomerName("王小明")
-				.setCustomerAddr("台北市")
-				.setCustomerEmail("john@yahoo.com.tw")
-				.setCustomerId("john19110101")
-				.setCustomerPhone("0912345678");
+		AllpayCustomer customer = invoice.getCustomer()
+				.setCustomerName("徐小名")
+				.setCustomerAddr("永靖鄉")
+				.setCustomerEmail("wowmama0107@gmail.com")
+				.setCustomerId("1224")
+				.setCustomerPhone("0933370691");
 		
 		
-		Item item = invoice.createItem()
-				.setItemName("移動ktv")
+		AllpayItem item = invoice.createItem()
+				.setItemName("單人活力水果箱")
 				.setItemCount(2)
-				.setItemPrice(100)
-				.setItemAmount(200)
-				.setItemWord("只");
+				.setItemPrice(499)
+				.setItemRemark("4-5種新鮮水 客製化您<br>的水果箱 適用:小資女、單身、學生")
+				.setItemWord("箱");
 		
-		invoice.createItem()
-			.setItemName("移動音響")
-			.setItemCount(1)
-			.setItemPrice(2000)
-			.setItemAmount(2000)
-			.setItemWord("個")
-			.setItemRemark("二手");
 		
 		Map<String, String> response = invoiceMachine.post(invoice);
 		
-		response.forEach((k, v)->System.out.println("Key : " + k + ", Value : " + URLDecoder.decode(v, "UTF-8")));
+//		response.forEach((k, v)->System.out.println("Key : " + k + ", Value : " + URLDecoder.decode(v, "UTF-8")));
     }
 	
 }
