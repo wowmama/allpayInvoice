@@ -11,6 +11,6 @@ import com.fruitpay.allpayInvoice.machine.MachineType;
 @Target(ElementType.FIELD)
 public @interface PostParameterName {
 	public String name() default "";
-	public boolean isEncode() default false;
+	public boolean isEncode() default true;
 	public MachineType[] method();
 }

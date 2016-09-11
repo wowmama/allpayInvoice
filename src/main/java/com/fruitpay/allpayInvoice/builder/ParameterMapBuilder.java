@@ -63,7 +63,7 @@ public class ParameterMapBuilder {
 					&& Arrays.asList(annotation.method()).contains(machineType)){
 				String value = 
 						obj instanceof Date ? String.valueOf(((Date)obj).getTime()/1000) : obj.toString() ;
-				value = AllpayURLEncoder.encode(value,"UTF-8");
+				value = annotation.isEncode() ? AllpayURLEncoder.encode(value,"UTF-8") : value;
 				parameterMap.put(annotation.name(), value);
 			}
 		}

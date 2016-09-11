@@ -16,7 +16,7 @@ import com.fruitpay.allpayInvoice.machine.MachineType;
  */
 public class AllpayCarruer implements PostParameterMap{
 	
-	@PostParameterName(name="CarruerNum",method={MachineType.CREATE}) 
+	@PostParameterName(name="CarruerNum",method={MachineType.CREATE},isEncode=false) 
 	private String carruerNum;
 	@PostParameterName(name="CarruerType",method={MachineType.CREATE}) 
 	private CarruerTypeEnum carruerType;

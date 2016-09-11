@@ -41,7 +41,7 @@ public class InvoiceMachine {
 	public Map<String,String> post(AllpayInvoice invoice) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException, NoSuchAlgorithmException, MalformedURLException, IOException{
 		HttpsURLConnection connection = (HttpsURLConnection)new URL(postUrl).openConnection();
 		String urlParameters = getUrlParameters(invoice);
-		System.out.println("urlParameters" + urlParameters);
+		
 		connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setUseCaches(false);

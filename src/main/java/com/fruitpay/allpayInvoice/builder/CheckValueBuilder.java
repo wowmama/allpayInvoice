@@ -28,7 +28,7 @@ public class CheckValueBuilder {
 		parameterMap.remove("ItemWord");
 		parameterMap.remove("ItemRemark");
 		parameterMap.remove("Reason");
-
+		
 		Object[] keys = parameterMap.keySet().toArray();
 		
 		Arrays.sort(keys);
