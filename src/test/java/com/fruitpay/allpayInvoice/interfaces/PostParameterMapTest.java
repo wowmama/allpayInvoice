@@ -215,7 +215,7 @@ public class PostParameterMapTest {
 			expected.put("SalesAmount", AllpayURLEncoder.encode(SalesAmount.toString(),"UTF-8"));
 		}
 		if(InvoiceRemark != null){
-			expected.put("InvoiceRemark", AllpayURLEncoder.encode(InvoiceRemark,"UTF-8"));
+			expected.put("InvoiceRemark", AllpayURLEncoder.encode(InvoiceRemark.replace("+", " "),"UTF-8"));
 		}
 		if(InvType != null){
 			expected.put("InvType", AllpayURLEncoder.encode(InvType.value(),"UTF-8"));

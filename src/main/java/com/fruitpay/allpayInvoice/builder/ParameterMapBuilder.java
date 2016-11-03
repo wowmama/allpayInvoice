@@ -63,6 +63,8 @@ public class ParameterMapBuilder {
 					&& Arrays.asList(annotation.method()).contains(machineType)){
 				String value = 
 						obj instanceof Date ? String.valueOf(((Date)obj).getTime()/1000) : obj.toString() ;
+				//在url encode之前，替換參數中的+為空白。根據allpay techsurppor給的參考範例修改。
+				value = value.replace("+", " ");
 				value = annotation.isEncode() ? AllpayURLEncoder.encode(value,"UTF-8") : value;
 				parameterMap.put(annotation.name(), value);
 			}
